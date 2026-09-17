@@ -129,7 +129,11 @@ a {
 .workspace {
   min-width: 0;
   flex: 1;
-  background: var(--workspace);
+  background-color: var(--workspace);
+  background-image: url("/wallhaven-28d516.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 @media (max-width: 720px) {
