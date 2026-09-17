@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-09-17
+goal: 清除快捷启动器功能，建立 StudyPower 的侧边导航应用外壳
+retire_capabilities: true
