@@ -11,7 +11,7 @@ export default function Home() {
       <aside className="sidebar">
         <div className="brand">
           <span className="brand-mark" aria-hidden="true">
-            S
+            SP
           </span>
           <span className="brand-name">StudyPower</span>
         </div>
