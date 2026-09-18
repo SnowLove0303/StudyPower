@@ -1,10 +1,10 @@
 :root {
-  color-scheme: light;
-  --sidebar: #182235;
-  --sidebar-muted: #a7b3c5;
-  --sidebar-active: #64758b;
-  --workspace: #f7f9fc;
-  --border: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
+  --glass-bg: rgba(12, 16, 24, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-light: rgba(255, 255, 255, 0.25);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
 }
 
 * {
@@ -18,9 +18,10 @@ body {
 
 body {
   margin: 0;
-  background: var(--workspace);
-  color: #17213c;
-  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  background-color: #030408;
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  overflow-x: hidden;
 }
 
 a {
@@ -28,170 +29,253 @@ a {
   text-decoration: none;
 }
 
-.app-shell {
-  display: flex;
-  min-height: 100vh;
+/* 全屏动态黑洞视频背景层 */
+.bg-video-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  background-color: #030408;
 }
 
+.bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+
+/* 边缘深空径向暗角 */
+.bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(3, 4, 8, 0.65) 100%);
+  pointer-events: none;
+}
+
+.app-shell {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* 太阳系深空黑透明立体玻璃轨道栏 */
 .sidebar {
   position: relative;
   display: flex;
-  width: 248px;
+  width: 72px;
   min-height: 100vh;
+  height: 100vh;
+  margin: 0;
+  border-radius: 0 20px 20px 0;
   flex-direction: column;
+  align-items: center;
   flex-shrink: 0;
-  padding: 28px 16px 20px;
+  padding: 32px 10px 24px;
+  /* 黑透烟熏玻璃与深空微光 */
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.11), transparent 18%),
-    linear-gradient(105deg, #303b4d 0%, var(--sidebar) 30%, #0d1525 100%);
-  color: #fff;
-  box-shadow: inset -1px 0 0 rgba(225, 233, 242, 0.18), 12px 0 28px rgba(13, 21, 37, 0.12);
+    linear-gradient(
+      105deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.03) 25%,
+      rgba(0, 0, 0, 0.4) 60%,
+      rgba(255, 255, 255, 0.03) 85%,
+      rgba(255, 255, 255, 0.14) 100%
+    ),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(10, 14, 22, 0.76) 0%, rgba(6, 8, 14, 0.88) 100%);
+  backdrop-filter: blur(32px) saturate(170%);
+  -webkit-backdrop-filter: blur(32px) saturate(170%);
+  border: none;
+  border-right: 1px solid var(--glass-border);
+  /* 3D 空间右向漫反射阴影与内圈微光倒角 */
+  box-shadow:
+    20px 0 45px rgba(0, 0, 0, 0.6),
+    6px 0 16px rgba(0, 0, 0, 0.4),
+    inset -1px 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.4);
+  transition: all 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10;
 }
 
+/* 顶部细高光棱边 */
 .sidebar::before {
+  content: "";
   position: absolute;
   top: 0;
-  right: 0;
   left: 0;
+  right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(239, 244, 250, 0.76), transparent);
-  content: "";
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 12px;
-}
-
-.brand-mark {
-  display: block;
-  width: auto;
-  height: auto;
-  color: transparent;
-  background: linear-gradient(155deg, #ffffff 8%, #8e9db2 38%, #f4f7fa 52%, #617188 76%, #dbe3ec 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  font-size: 21px;
-  font-weight: 900;
-  letter-spacing: -0.16em;
-  line-height: 1;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.16), 0 2px 5px rgba(0, 0, 0, 0.28);
-}
-
-.brand-name {
-  color: transparent;
-  background: linear-gradient(180deg, #ffffff 10%, #a5b2c2 48%, #eef2f6 60%, #68778c 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.8) 50%, transparent);
+  pointer-events: none;
 }
 
 .sidebar-nav {
-  margin-top: 56px;
-}
-
-.nav-label {
-  margin: 0 12px 12px;
-  color: var(--sidebar-muted);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.sidebar-link {
   display: flex;
-  min-height: 46px;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin: 4px 0;
-  padding: 0 12px;
-  border-left: 2px solid transparent;
-  border-radius: 4px;
-  color: var(--sidebar-muted);
-  font-size: 14px;
-  font-weight: 600;
-  transition: background 160ms ease, color 160ms ease;
+  width: 100%;
+  gap: 18px;
 }
 
-.sidebar-link:hover {
-  background: linear-gradient(90deg, rgba(224, 233, 241, 0.15), rgba(224, 233, 241, 0.02));
-  color: #fff;
+/* 3D 天体行星按键 */
+.planet-link {
+  position: relative;
+  display: flex;
+  width: 52px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.sidebar-link.is-active {
-  border-left-color: #dbe4ed;
-  background: linear-gradient(90deg, rgba(182, 198, 216, 0.32), rgba(96, 117, 141, 0.1));
-  color: #fff;
-  box-shadow: inset 0 1px 0 rgba(235, 241, 247, 0.22), inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 8px 18px rgba(4, 10, 20, 0.18);
+/* 基础立体天体贴图通用样式 */
+.planet-texture {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  mix-blend-mode: screen;
+  transition: all 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 太阳专属贴图与炽热日冕光晕 */
+.planet-texture.sun-sphere {
+  filter: drop-shadow(0 0 10px rgba(255, 170, 20, 0.8));
+}
+
+.planet-link:hover .planet-texture.sun-sphere {
+  transform: scale(1.15) rotate(4deg);
+  filter: drop-shadow(0 0 18px rgba(255, 185, 30, 0.95))
+          drop-shadow(0 0 34px rgba(255, 100, 0, 0.7));
+}
+
+/* 海王星专属深蓝冰晶光晕 */
+.planet-texture.neptune-sphere {
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.8));
+}
+
+.planet-link:hover .planet-texture.neptune-sphere {
+  transform: scale(1.15) rotate(-4deg);
+  filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.95))
+          drop-shadow(0 0 34px rgba(14, 165, 233, 0.7));
+}
+
+/* 太阳激活态：引力轨道光环与日冕呼吸动效 */
+.planet-link.theme-sun.is-active::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 215, 120, 0.7);
+  box-shadow:
+    0 0 18px rgba(255, 150, 20, 0.55),
+    inset 0 0 10px rgba(255, 140, 20, 0.3);
+  animation: solar-pulse 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+/* 海王星激活态：冰蓝引力轨道光环与大气呼吸动效 */
+.planet-link.theme-neptune.is-active::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(56, 189, 248, 0.75);
+  box-shadow:
+    0 0 18px rgba(14, 165, 233, 0.6),
+    inset 0 0 10px rgba(2, 132, 199, 0.4);
+  animation: neptune-pulse 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes solar-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+    box-shadow:
+      0 0 24px rgba(255, 175, 35, 0.85),
+      inset 0 0 14px rgba(255, 150, 30, 0.45);
+  }
+}
+
+@keyframes neptune-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+    box-shadow:
+      0 0 24px rgba(56, 189, 248, 0.9),
+      inset 0 0 14px rgba(14, 165, 233, 0.5);
+  }
+}
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 底部圆形设置按键 */
+.settings-link {
+  position: relative;
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.settings-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
 }
 
 .nav-icon {
   display: flex;
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
   align-items: center;
   justify-content: center;
-  border: 0;
-  border-radius: 0;
-  color: #aebdce;
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.48);
+  color: inherit;
+  transition: all 220ms ease;
 }
 
-.sidebar-footer {
-  margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
+.settings-link:hover .nav-icon {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
 }
 
 .workspace {
   min-width: 0;
   flex: 1;
-  background-color: var(--workspace);
-  background-image: url("/wallhaven-28d516.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-@media (max-width: 720px) {
-  .sidebar {
-    width: 76px;
-    align-items: center;
-    padding: 20px 10px;
-  }
-
-  .brand {
-    padding: 0;
-  }
-
-  .brand-name,
-  .nav-label,
-  .nav-text {
-    display: none;
-  }
-
-  .sidebar-nav {
-    width: 100%;
-    margin-top: 42px;
-  }
-
-  .sidebar-link {
-    justify-content: center;
-    padding: 0;
-    border-left: 0;
-  }
-
-  .sidebar-footer {
-    width: 100%;
-  }
 }
